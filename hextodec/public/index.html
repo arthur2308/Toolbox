@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="javascripts/tempscripts/rx.lite.js"> </script>
+    <!--<script src="javascripts/tempscripts/jquery.js"> </script>-->
+    <script   src="https://code.jquery.com/jquery-3.1.1.min.js"
+              integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+              crossorigin="anonymous">
+    </script>
+    <script>
+
+        $(function() {
+            var hexBox = $("#hexBox");
+
+            //creating onservable to the button click event
+            Rx.Observable.fromEvent($("#sendButton"), 'click')
+                    .subscribe(output => {
+                        console.log(hexBox.val());
+                        var url = 'http://localhost:3000/hex';
+                        $.ajax(url, {
+                            'type': 'POST',
+                            'data': JSON.stringify(hexBox.val()),
+                            'processData': false,
+                            'contentType': 'application/json',
+                            'success': x => console.log("Success " + x),
+                            'error': e => console.log(e),
+                            'headers': {'Access-Control-Allow-Origin' : true}
+                        })
+                    });
+
+            //Create the url
+            var url = 'localhost:3000/hex';
+
+           /*
+            request.post({
+                url: 'url',
+                data: {},
+                headers: {}
+            });
+            */
+
+        });
+    </script>
+</head>
+<body>
+<input id="hexBox" type="hexContent"/>
+<button id="sendButton">Send</button>
+</body>
+</html>
